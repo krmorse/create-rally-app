@@ -42,9 +42,9 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "start": "node create-react-app/scripts/start.js",
+    "build": "node create-react-app/scripts/build.js",
+    "test": "node create-react-app/scripts/test.js --env=jsdom"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -87,5 +87,9 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "bin": {
+    "create-rally-app": "./bin/create-rally-app",
+    "cra": "./bin/create-rally-app"
   }
 }
