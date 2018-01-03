@@ -8,8 +8,8 @@ const server = 'https://rally1.rallydev.com';
 //todo: do not hardcode
 //const sdkJsPath = `${server}/apps/${sdkVersion}/sdk.js 
 //const sdkCssPath = `${server}/apps/${sdkVersion}/sdk.css 
-const sdkJsPath = 'http://localhost:3000/sdk.js';
-const sdkCssPath = 'http://localhost:3000/sdk.css';
+const sdkJsPath = 'https://localhost:3000/sdk.js';
+const sdkCssPath = 'https://localhost:3000/sdk.css';
 const appName = 'My App';
 
 const templateOptions = {
