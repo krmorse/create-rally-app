@@ -1,9 +1,19 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+var HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
 //todo: get from rally section of package.json
 const server = 'https://rally1.rallydev.com';
+
+//todo: do not hardcode
+//const sdkPath = `${server}/apps/${sdkVersion}/sdk.js 
+const sdkPath = 'http://localhost:3000/sdk.js';
+const appName = 'My App';
+
+const templateOptions = {
+  sdkPath,
+  appName
+};
 
 module.exports = {
     entry: './src/index.js',
@@ -18,14 +28,8 @@ module.exports = {
     },
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
-        openPage: 'App.html',
-        port: 9000,
-        proxy: {
-            '/slm': {
-                target: server,
-                changeOrigin: true,
-            }
-        }
+        openPage: 'App-dev.html',
+        port: 9000
     },
     module: {
         rules: [
@@ -35,7 +39,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader'
                 }
-            },
+            }/*,
             {
                 test: /\.html$/,
                 use: [
@@ -43,16 +47,23 @@ module.exports = {
                         loader: 'html-loader'
                     }
                 ]
-            }
+            }*/
         ]
     },
     plugins: [
         new HtmlWebPackPlugin({
-            template: "./html/App.html",
-            filename: './App.html'
+            template: "./html/App-dev.html",
+            filename: './App-dev.html',
+            inject: 'head',
+            ...templateOptions
         }),
-        new CopyWebpackPlugin([
-            { from: './node_modules/rally-sdk/dist/', to: 'lib/sdk' },
-        ])
+        new HtmlWebPackPlugin({
+          template: "./html/App-deploy.html",
+          filename: './App-deploy.html',
+          inject: 'head',
+          inlineSource: '.(js)$',
+          ...templateOptions
+        }),
+        new HtmlWebpackInlineSourcePlugin()
     ]
 };

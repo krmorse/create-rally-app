@@ -1,7 +1,9 @@
 import App from './App';
 import { Sdk } from 'rally-sdk';
 
-const appProps = {
-    foo: 'bar'
-};
-Sdk.renderApp(<App { ...appProps } />);
+//todo: templatify, from package.json
+const SERVER = 'https://rally1.rallydev.com';
+
+Sdk.renderApp(App, { 
+  server: SERVER
+});

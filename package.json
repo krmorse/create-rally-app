@@ -20,7 +20,5 @@
     "url": "https://github.com/krmorse/create-rally-app/issues"
   },
   "homepage": "https://github.com/krmorse/create-rally-app#readme",
-  "devDependencies": {
-    "webpack": "^3.10.0"
-  }
+  "devDependencies": {}
 }
