@@ -6,12 +6,15 @@ var HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin')
 const server = 'https://rally1.rallydev.com';
 
 //todo: do not hardcode
-//const sdkPath = `${server}/apps/${sdkVersion}/sdk.js 
-const sdkPath = 'http://localhost:3000/sdk.js';
+//const sdkJsPath = `${server}/apps/${sdkVersion}/sdk.js 
+//const sdkCssPath = `${server}/apps/${sdkVersion}/sdk.css 
+const sdkJsPath = 'http://localhost:3000/sdk.js';
+const sdkCssPath = 'http://localhost:3000/sdk.css';
 const appName = 'My App';
 
 const templateOptions = {
-  sdkPath,
+  sdkJsPath,
+  sdkCssPath,
   appName
 };
 
@@ -20,7 +23,10 @@ module.exports = {
     externals: {
         'rally-sdk': 'Rally',
         'react': 'React',
-        'react-dom': 'ReactDOM'
+        'react-dom': 'ReactDOM',
+        'immutable': 'Immutable',
+        'react-immutable-proptypes': 'ImmutablePropTypes',
+        'prop-types': 'PropTypes'
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -39,15 +45,11 @@ module.exports = {
                 use: {
                     loader: 'babel-loader'
                 }
-            }/*,
+            },
             {
-                test: /\.html$/,
-                use: [
-                    {
-                        loader: 'html-loader'
-                    }
-                ]
-            }*/
+              test:/\.(s*)css$/,
+              use: ['style-loader', 'css-loader', 'sass-loader']
+           }
         ]
     },
     plugins: [
@@ -61,7 +63,7 @@ module.exports = {
           template: "./html/App-deploy.html",
           filename: './App-deploy.html',
           inject: 'head',
-          inlineSource: '.(js)$',
+          inlineSource: '.(js|css)$',
           ...templateOptions
         }),
         new HtmlWebpackInlineSourcePlugin()
