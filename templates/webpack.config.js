@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-var HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 //todo: get from rally section of package.json
 const server = 'https://rally1.rallydev.com';
@@ -48,11 +49,16 @@ module.exports = {
             },
             {
               test:/\.(s*)css$/,
-              use: ['style-loader', 'css-loader', 'sass-loader']
+              use: ExtractTextPlugin.extract({
+                filename: 'appstyles.css',
+                fallback: 'style-loader',
+                use: ['css-loader', 'sass-loader']
+              })
            }
         ]
     },
     plugins: [
+        new ExtractTextPlugin('appstyles.css'),
         new HtmlWebPackPlugin({
             template: "./html/App-dev.html",
             filename: './App-dev.html',
@@ -63,7 +69,7 @@ module.exports = {
           template: "./html/App-deploy.html",
           filename: './App-deploy.html',
           inject: 'head',
-          inlineSource: '.(js|css)$',
+          inlineSource: '.(js)$',
           ...templateOptions
         }),
         new HtmlWebpackInlineSourcePlugin()
