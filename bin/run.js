@@ -1,9 +1,9 @@
-let fs = require('fs');
-let path = require('path');
-let yargs = require('yargs');
-let CreateRallyApp = require('../lib/');
+const fs = require('fs');
+const path = require('path');
+const yargs = require('yargs');
+const CreateRallyApp = require('../lib/');
 
-let errorHandler = function(error) {
+const errorHandler = function(error) {
   if (error) {
     console.error(`\r\n${error[0] || error}`);
     return console.error('\r\nBuild aborted due to error.');
@@ -12,16 +12,17 @@ let errorHandler = function(error) {
   }
 };
 
-let build = function(args) {
-  let {templates} = args;
-  console.log('Compiling the App.');
-  return CreateRallyApp.build({templates}, errorHandler);
+function build(args) {
+  // console.log('Compiling the App.');
+  return CreateRallyApp.buildAll().then(() => {
+    console.log('Success');
+  }, errorHandler);
 };
 
-let init = function(args) {
-  let {name, sdk, server, templates} = args;
+const init = function(args) {
+  const {name, sdk, server, templates} = args;
   name = args._[1] || name;
-  let sdk_version = args._[2] || sdk;
+  const sdk_version = args._[2] || sdk;
   server = args._[3] || server;
   console.log('Creating a new App.');
   return CreateRallyApp.init(
@@ -36,19 +37,19 @@ let init = function(args) {
 };
 
 
-let watch = function(args) {
-  let {templates, ci} = args;
+const watch = function(args) {
+  const {templates, ci} = args;
   return CreateRallyApp.watch({templates, ci});
 };
 
-let run = function(args) {
-  let {port} = args;
+const run = function(args) {
+  const {port} = args;
   port = args._[1] || port;
   return CreateRallyApp.run({port});
 };
 
-let test = function(args) {
-  let {debug, spec} = args;
+const test = function(args) {
+  const {debug, spec} = args;
   return CreateRallyApp.test({debug, spec});
 };
 
@@ -66,8 +67,8 @@ yargs
   .command(
     'build',
     'Builds the current App.',
-    {templates: {alias: 't', describe: 'The path containing custom html output templates (advanced)'}}
-    , build
+    {}, 
+    build
   )
   .command(
     'watch',
