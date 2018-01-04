@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const TidyHtmlWebpackPlugin = require('tidy-html-webpack-plugin');
 
 //todo: get from rally section of package.json
 const server = 'https://rally1.rallydev.com';
@@ -69,9 +70,14 @@ module.exports = {
           template: "./html/App-deploy.html",
           filename: './App-deploy.html',
           inject: 'head',
-          inlineSource: '.(js)$',
+          inlineSource: '.(js|css)$',
+          minify: {
+            minifyJS: true,
+            minifyCSS: true
+          },
           ...templateOptions
         }),
-        new HtmlWebpackInlineSourcePlugin()
+        new HtmlWebpackInlineSourcePlugin(),
+        new TidyHtmlWebpackPlugin()
     ]
 };
