@@ -14,19 +14,16 @@ const errorHandler = function(error) {
 
 function build(args) {
   // console.log('Compiling the App.');
-  return CreateRallyApp.buildAll().then(() => {
+  return CreateRallyApp.Build.buildAll().then(() => {
     console.log('Success');
   }, errorHandler);
 };
 
 const init = function(args) {
-  const {name, sdk, server, templates} = args;
-  name = args._[1] || name;
-  const sdk_version = args._[2] || sdk;
-  server = args._[3] || server;
+  const {name, sdk, server} = args;
   console.log('Creating a new App.');
-  return CreateRallyApp.init(
-    {name, sdk_version, server, templates},
+  return CreateRallyApp.Init.init(
+    {name, sdk, server},
     function(error) {
       if (error) {
         return errorHandler(error);
