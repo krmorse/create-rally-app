@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const yargs = require('yargs');
 const CreateRallyApp = require('../lib/');
+const { Build, Init, Run } = CreateRallyApp;
 
 const errorHandler = function(error) {
   if (error) {
@@ -13,8 +14,7 @@ const errorHandler = function(error) {
 };
 
 function build(args) {
-  // console.log('Compiling the App.');
-  return CreateRallyApp.Build.buildAll().then(() => {
+  return Build.buildAll().then(() => {
     console.log('Success');
   }, errorHandler);
 };
@@ -22,7 +22,7 @@ function build(args) {
 const init = function(args) {
   const {name, sdk, server} = args;
   console.log('Creating a new App.');
-  return CreateRallyApp.Init.init(
+  return Init.init(
     {name, sdk, server},
     function(error) {
       if (error) {
@@ -33,16 +33,15 @@ const init = function(args) {
   });
 };
 
+const run = function({ port }) {
+  return Build.build({ mode: 'dev' }).then(() => {
+    return Run.run({ port });
+  });
+};
 
 const watch = function(args) {
   const {templates, ci} = args;
   return CreateRallyApp.watch({templates, ci});
-};
-
-const run = function(args) {
-  const {port} = args;
-  port = args._[1] || port;
-  return CreateRallyApp.run({port});
 };
 
 const test = function(args) {
